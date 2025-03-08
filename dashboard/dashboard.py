@@ -9,7 +9,7 @@ st.write("#### _MC004D5Y1124 - Rasendra Akbar Satyatama_")
 st.write("source: https://www.kaggle.com/datasets/lakshmi25npathi/bike-sharing-dataset/data")
 st.write("----------------------------------------------------------------------------------\n")
 
-days_df = pd.read_csv('main_data.csv')
+days_df = pd.read_csv('dashboard/main_data.csv')
 
 with st.sidebar:
     option = option_menu("Dashboard", ['Time Series', 'Factors'], default_index=0)
