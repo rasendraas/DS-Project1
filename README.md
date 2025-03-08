@@ -27,5 +27,5 @@ pip3 freeze > "requirements.txt"
 
 ## 5. Run `Dashboard`
 ```bash
-streamlit run dashboard.py
+streamlit run dashboard/dashboard.py
 ```
