@@ -3,16 +3,13 @@ import pandas as pd # type: ignore
 import matplotlib.pyplot as plt
 from streamlit_option_menu import option_menu
 import seaborn as sns
-import os
 
 st.title("Bike Sharing (2011 - 2012)")
 st.write("#### _MC004D5Y1124 - Rasendra Akbar Satyatama_")
 st.write("source: https://www.kaggle.com/datasets/lakshmi25npathi/bike-sharing-dataset/data")
 st.write("----------------------------------------------------------------------------------\n")
 
-script_dir = os.path.dirname(os.path.abspath(__file__))
-file_path = os.path.join(script_dir, 'main_data.csv')
-days_df = pd.read_csv(file_path)
+days_df = pd.read_csv('main_data.csv)
 
 with st.sidebar:
     option = option_menu("Dashboard", ['Time Series', 'Factors'], default_index=0)
