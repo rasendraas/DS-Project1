@@ -1,1 +1,1 @@
-https://mc004d5y1124-project1.streamlit.app/
+https://mc004d5y1124-ds-project1.streamlit.app/
