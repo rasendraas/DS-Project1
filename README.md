@@ -15,7 +15,6 @@ conda install pandas
 conda install numpy
 conda install matplotlib
 conda install seaborn
-conda install scikit-learn
 pip install streamlit
 pip install streamlit-option-menu
 ```
