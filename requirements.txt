@@ -3,6 +3,4 @@ pandas
 numpy
 matplotlib==3.10.0
 seaborn
-scikit-learn
-plotly
 streamlit-option-menu==0.4.0
