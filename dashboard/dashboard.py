@@ -55,35 +55,89 @@ if(option == 'Time Series'):
 
     st.pyplot(fig)
     
+weekday_labels = {
+    0: "Sunday", 1: "Monday", 2: "Tuesday", 3: "Wednesday",
+    4: "Thursday", 5: "Friday", 6: "Saturday"
+}
+season_labels = {1: "Spring", 2: "Summer", 3: "Fall", 4: "Winter"}
+weather_labels = {
+    1: "Clear",
+    2: "Mist",
+    3: "Light Snow/Rain"
+}
+month_map = {
+    1: "Januari", 2: "Februari", 3: "Maret", 4: "April",
+    5: "Mei", 6: "Juni", 7: "Juli", 8: "Agustus",
+    9: "September", 10: "Oktober", 11: "November", 12: "Desember"
+}
+year_labels = {0: "2011", 1: "2012"}
+weekday_labels = {
+    0: "Sunday", 1: "Monday", 2: "Tuesday", 3: "Wednesday",
+    4: "Thursday", 5: "Friday", 6: "Saturday"
+}
+season_labels = {1: "Spring", 2: "Summer", 3: "Fall", 4: "Winter"}
+weather_labels = {
+    1: "Clear",
+    2: "Mist",
+    3: "Light Snow/Rain"
+}
+month_map = {
+    1: "January", 2: "February", 3: "March", 4: "April",
+    5: "May", 6: "June", 7: "July", 8: "August",
+    9: "September", 10: "October", 11: "November", 12: "December"
+}
+year_labels = {0: "2011", 1: "2012"}
+
+days_df["year"] = days_df["year"].map(year_labels)
+days_df["month"] = days_df["month"].map(month_map)
+days_df["weekday"] = days_df["weekday"].map(weekday_labels)
+
+
 if option == "Factors":
-    category_option = st.selectbox("Select Category", ["Weekday", "Month", "Year"])
+    category_option = st.selectbox("Select Category", ["Year", "Month", "Weekday"])
 
     category_mapping = {
-        "Weekday": "weekday",
+        "Year": "year",
         "Month": "month",
-        "Year": "year"
+        "Weekday": "weekday"
     }
     
     selected_category = category_mapping[category_option]
 
     st.write(f"#### Total Bike Rentals by {category_option}")
-    
+
     grouped_df = days_df.groupby(selected_category)['count'].sum().reset_index()
 
-    st.bar_chart(data=grouped_df, x=selected_category, y="count", use_container_width=True)
+    # Urutan yang benar menggunakan pd.Categorical
+    if selected_category == "month":
+        grouped_df[selected_category] = pd.Categorical(grouped_df[selected_category], 
+                                                       categories=list(month_map.values()), 
+                                                       ordered=True)
+    elif selected_category == "weekday":
+        grouped_df[selected_category] = pd.Categorical(grouped_df[selected_category], 
+                                                       categories=["Sunday", "Monday", "Tuesday", "Wednesday", 
+                                                                   "Thursday", "Friday", "Saturday"], 
+                                                       ordered=True)
 
+    grouped_df = grouped_df.sort_values(by=selected_category)
+
+    st.bar_chart(data=grouped_df, x=selected_category, y="count", use_container_width=True)
+    
     factor_option = st.selectbox("Select Factor", ["Season", "Weather"])
 
     if factor_option == "Season":
         st.write("#### Total Bike Rentals by Season")
         season_df = days_df.groupby("season")["count"].sum().reset_index()
+        season_df["season"] = season_df["season"].map(season_labels)
         st.bar_chart(data=season_df, x="season", y="count", use_container_width=True)
     
     elif factor_option == "Weather":
         st.write("#### Total Bike Rentals by Weather")
         weather_df = days_df.groupby("weather")["count"].sum().reset_index()
+        weather_df["weather"] = weather_df["weather"].map(weather_labels)
         st.bar_chart(data=weather_df, x="weather", y="count", use_container_width=True)
     
+    # Heatmap korelasi
     st.write("#### Correlation Heatmap for Numerical Variables")
     excluded_columns = ["instant", "year", "month", "holiday", "weekday", "workingday", "season", "weather"]
     numeric_cols = [col for col in days_df.select_dtypes(include=["float64", "int64"]).columns if col not in excluded_columns]
